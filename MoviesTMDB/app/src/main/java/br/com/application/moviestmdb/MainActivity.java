@@ -2,23 +2,22 @@ package br.com.application.moviestmdb;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         search = (SearchView) findViewById(R.id.search);
         list = (ListView) findViewById(R.id.list);
+        View rootView = findViewById(android.R.id.content);
 
         consultaRetrofitGeneros();
 
@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("filme_obj", (Serializable) filmes.get(i));
                 intent.putExtra("generos_obj", (Serializable) generos);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 if(TextUtils.isEmpty(s)){
                     consultaRetrofitPopularMovies();
                 }
+                hideKeyboardOver();
                 return true;
             }
 
@@ -73,6 +75,16 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+        search.setOnKeyListener((v, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+                hideKeyboardOver();
+                return true;
+            }
+            return false;
+        });
+
+        search.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
 
     }
 
@@ -178,5 +190,14 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, "Erro: " + t.getMessage());
             }
         });
+    }
+
+    private void hideKeyboardOver() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+    }
+
+    private void hideKeyboard() {
+        search.clearFocus();
     }
 }

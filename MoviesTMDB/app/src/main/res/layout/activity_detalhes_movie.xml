@@ -19,7 +19,7 @@
             <ImageView
                 android:id="@+id/banner"
                 android:layout_width="match_parent"
-                android:layout_height="244dp"
+                android:layout_height="250dp"
                 android:scaleType="fitXY"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -36,7 +36,7 @@
                 android:text="Titulo do filme"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="26sp"
+                android:textSize="28sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -50,48 +50,113 @@
                 android:textSize="20sp" />
 
             <TextView
+                android:id="@+id/textoCabeca"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginRight="10dp"
+                android:text="Data de lançamento:"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
                 android:id="@+id/release_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="release_date"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textoCabeca3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="10dp"
-                android:text="release_date"
+                android:text="Avaliação:"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/vote_average"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="15dp"
                 android:layout_marginRight="10dp"
                 android:text="vote_average"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textoCabeca4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:text="Sinopse:"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/overview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="15dp"
                 android:layout_marginRight="10dp"
                 android:text="overview"
                 android:textColor="@color/black"
-                android:textSize="24sp" />
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textoCabeca5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:text="Gênero(s):"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/genre_ids"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="15dp"
                 android:layout_marginRight="10dp"
                 android:text="genre_ids"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textoCabeca6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:text="Elenco:"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerCast"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="100dp"
+                android:scrollbars="horizontal" />
+
+
         </LinearLayout>
     </ScrollView>
 

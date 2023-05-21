@@ -1,6 +1,7 @@
 package br.com.application.moviestmdb;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,15 +63,18 @@ public class Adapter_item_filme extends ArrayAdapter<Filme> {
         vote_average.setText("Avaliação: " + filmes.get(position).getVote_average().toString());
 
         String str_generos_do_filme = "";
-        for(int i = 0; i<filmes.get(position).getGenre_ids().size(); i++){
-            Integer id_genero_filme = filmes.get(position).getGenre_ids().get(i);
-            for(int j = 0; j<generos.size(); j++){
-                if(Objects.equals(generos.get(j).getId(), id_genero_filme)){
-                    str_generos_do_filme = str_generos_do_filme + " " + generos.get(j).getName();
+        if(filmes.get(position).getGenre_ids() != null){
+            for(int i = 0; i<filmes.get(position).getGenre_ids().size(); i++){
+                Integer id_genero_filme = filmes.get(position).getGenre_ids().get(i);
+                for(int j = 0; j<generos.size(); j++){
+                    if(Objects.equals(generos.get(j).getId(), id_genero_filme)){
+                        str_generos_do_filme = str_generos_do_filme + " " + generos.get(j).getName();
+                    }
                 }
             }
         }
         genero.setText(str_generos_do_filme);
+
         return rowView;
     }
 }
