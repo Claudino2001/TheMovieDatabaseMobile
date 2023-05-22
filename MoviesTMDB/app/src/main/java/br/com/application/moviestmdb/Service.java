@@ -18,5 +18,9 @@ public interface Service {
     Call<Genres> GetAPIGeneros(@Query("language") String language, @Query("api_key") String apiKey);
     @GET("movie/{movie_id}/credits")
     Call<Credits> GetCredits(@Path("movie_id") Integer movieId, @Query("api_key") String apiKey);
+    @GET("movie/{movie_id}")
+    Call<Details> GetDetails(@Path("movie_id") Integer movieId, @Query("api_key") String apiKey);
+    @GET("movie/{movie_id}/release_dates")
+    Call<ReleaseDates> GetReleaseDates(@Path("movie_id") Integer movieId, @Query("api_key") String apiKey);
 
 }
