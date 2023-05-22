@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.SearchView;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -28,8 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private SearchView search;
     private ListView list;
     private static final String TAG = " MINHA TAG";
-    List<Filme> filmes;
-    List<Genero> generos;
+    List<Filme> filmes = new ArrayList<>();
+    List<Genero> generos = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
