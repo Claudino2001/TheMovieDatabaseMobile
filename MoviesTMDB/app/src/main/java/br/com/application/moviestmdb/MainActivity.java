@@ -1,9 +1,11 @@
 package br.com.application.moviestmdb;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,6 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -35,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = " MINHA TAG";
     List<Filme> filmes = new ArrayList<>();
     List<Genero> generos = new ArrayList<>();
+    public BancoDeDados banco;
 
     public BottomNavigationView bottomNavigationView;
 
@@ -47,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
         list = (ListView) findViewById(R.id.list);
         View rootView = findViewById(android.R.id.content);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        banco();
 
         consultaRetrofitGeneros();
 
@@ -67,6 +73,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Integer filme_id = filmes.get(i).getId();
+                String filme_name = filmes.get(i).getOriginal_title();
+                Toast.makeText(MainActivity.this, filme_id + " / " + filme_name, Toast.LENGTH_SHORT).show();
+                inserirAosFavs(filme_id, filme_name);
+                return true;
+            }
+        });
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -108,6 +124,30 @@ public class MainActivity extends AppCompatActivity {
         });
 
         search.setImeOptions(EditorInfo.IME_ACTION_DONE);
+    }
+
+    private void inserirAosFavs(int filme_id, String filme_nome) {
+        AlertDialog.Builder msgBox = new AlertDialog.Builder(this);
+        msgBox.setTitle("ADICIONAR FILME AOS FAVORITOS?");
+        msgBox.setIcon(R.drawable.ic_add);
+        msgBox.setMessage("Tem certeza que deseja adicionar esse filme aos favoritos?");
+        msgBox.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                banco.inserirDados(filme_id, filme_nome);
+            }
+        });
+        msgBox.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Toast.makeText(MainActivity.this, "Operação cancelada.", Toast.LENGTH_SHORT).show();
+            }
+        });
+        msgBox.show();
+    }
+
+    private void banco() {
+        banco = new BancoDeDados(this);
     }
 
     private void consultaRetrofitGeneros() {
