@@ -20,7 +20,7 @@
     <style name="Theme.MoviesTMDB" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">#AED6F1</item>
-        <item name="colorPrimaryVariant">#85C1E9</item>
+        <item name="colorPrimaryVariant">#6FB8E8</item>
         <item name="colorOnPrimary">#FFFFFF</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">#5DADE2</item>
@@ -30,4 +30,13 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Widget.App.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
+    </style>
+
+    <style name="ThemeOverlay.App.BottomNavigationView" parent="">
+        <item name="colorOnPrimary">@color/blue_two</item>
+    </style>
+
 </resources>

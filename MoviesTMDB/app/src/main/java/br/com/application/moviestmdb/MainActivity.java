@@ -1,5 +1,6 @@
 package br.com.application.moviestmdb;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -8,12 +9,15 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -32,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     List<Filme> filmes = new ArrayList<>();
     List<Genero> generos = new ArrayList<>();
 
+    public BottomNavigationView bottomNavigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,10 +46,27 @@ public class MainActivity extends AppCompatActivity {
         search = (SearchView) findViewById(R.id.search);
         list = (ListView) findViewById(R.id.list);
         View rootView = findViewById(android.R.id.content);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         consultaRetrofitGeneros();
 
         consultaRetrofitPopularMovies();
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.page_main:
+                        return false;
+                    case R.id.page_favoritos:
+                        startActivity(new Intent(MainActivity.this, FavoritosActivity.class));
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                        return true;
+                }
+                return false;
+            }
+        });
+
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -85,8 +108,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         search.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-
     }
 
     private void consultaRetrofitGeneros() {
