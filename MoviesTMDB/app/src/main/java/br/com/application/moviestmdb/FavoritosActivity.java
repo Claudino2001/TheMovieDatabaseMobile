@@ -19,7 +19,6 @@ public class FavoritosActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
     private ListView listFav;
-    public ArrayList listaFavoritos;
     BancoDeDados banco;
 
     @Override
@@ -46,19 +45,33 @@ public class FavoritosActivity extends AppCompatActivity {
 
     private void implementationNavigationView() {
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setSelectedItemId(R.id.page_favoritos);
+
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.page_main:
-                        startActivity(new Intent(FavoritosActivity.this, MainActivity.class));
+                        startActivity(new Intent(FavoritosActivity.this, MainActivity.class)
+                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                         return true;
                     case R.id.page_favoritos:
-                        return false;
+                        return true;
+                    case R.id.page_search:
+                        startActivity(new Intent(FavoritosActivity.this, SearchActivity.class)
+                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                        return true;
                 }
                 return false;
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bottomNavigationView.setSelectedItemId(R.id.page_favoritos);
     }
 }

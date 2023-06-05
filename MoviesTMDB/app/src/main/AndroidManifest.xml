@@ -14,12 +14,16 @@
         android:theme="@style/Theme.MoviesTMDB"
         tools:targetApi="31">
         <activity
+            android:name=".SearchActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".FavoritosActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".DetalhesMovieActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
