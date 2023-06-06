@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void inserirAosFavs(int filme_id, String filme_nome) {
         AlertDialog.Builder msgBox = new AlertDialog.Builder(this);
-        msgBox.setTitle("ADICIONAR FILME AOS FAVORITOS?");
+        msgBox.setTitle("Adicionar filme aos favoritos.");
         msgBox.setIcon(R.drawable.ic_add);
         msgBox.setMessage("Tem certeza que deseja adicionar esse filme aos favoritos?");
         msgBox.setPositiveButton("Sim", new DialogInterface.OnClickListener() {

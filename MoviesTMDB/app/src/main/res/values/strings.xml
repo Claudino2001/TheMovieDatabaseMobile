@@ -3,4 +3,5 @@
     <string name="menuText_1">Home</string>
     <string name="menuText_2">Favoritos</string>
     <string name="menuText_3">Buscar</string>
+    <string name="SearchText">Busque por um filme...</string>
 </resources>

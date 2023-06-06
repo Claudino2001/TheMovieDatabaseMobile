@@ -4,4 +4,5 @@
     <string name="menuText_1">Home</string>
     <string name="menuText_2">Favorites</string>
     <string name="menuText_3">Search</string>
+    <string name="SearchText">Search Here...</string>
 </resources>

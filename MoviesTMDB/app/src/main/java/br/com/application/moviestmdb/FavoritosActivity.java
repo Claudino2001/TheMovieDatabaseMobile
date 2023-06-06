@@ -74,7 +74,7 @@ public class FavoritosActivity extends AppCompatActivity {
 
     private void excluirFilmeDosFavs(int number) {
         AlertDialog.Builder msgBox = new AlertDialog.Builder(this);
-        msgBox.setTitle("EXCLUIR FILME DOS FAVORITOS?");
+        msgBox.setTitle("Excluir filme dos favoritos.");
         msgBox.setIcon(R.drawable.ic_delete24);
         msgBox.setMessage("Tem certeza que deseja excluir esse filme dos favoritos?");
         msgBox.setPositiveButton("Sim", new DialogInterface.OnClickListener() {

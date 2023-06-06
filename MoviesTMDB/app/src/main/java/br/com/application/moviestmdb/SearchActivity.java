@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,7 +13,9 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -50,6 +53,8 @@ public class SearchActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         banco = new BancoDeDados(this);
+
+        configSearch();
 
         bottomNavigationView.setSelectedItemId(R.id.page_search);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -96,13 +101,27 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    private void configSearch() {
+
+        // Obtém o layout pai do SearchView
+        ViewGroup searchViewParent = (ViewGroup) search.getParent();
+
+        // Adiciona um OnClickListener ao layout pai
+        searchViewParent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Abre a opção de busca quando clicar em qualquer lugar do SearchView
+                search.onActionViewExpanded();
+            }
+        });
+
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 buscarFilme(s);
-                if(TextUtils.isEmpty(s)){
-                    consultaRetrofitPopularMovies();
-                }
                 hideKeyboardOver();
                 return true;
             }
@@ -110,9 +129,6 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String s) {
                 buscarFilme(s);
-                if(TextUtils.isEmpty(s)){
-                    consultaRetrofitPopularMovies();
-                }
                 return true;
             }
         });
@@ -124,12 +140,14 @@ public class SearchActivity extends AppCompatActivity {
             return false;
         });
 
+        search.clearFocus();
+
         search.setImeOptions(EditorInfo.IME_ACTION_DONE);
     }
 
     private void inserirAosFavs(int filme_id, String filme_nome) {
         AlertDialog.Builder msgBox = new AlertDialog.Builder(this);
-        msgBox.setTitle("ADICIONAR FILME AOS FAVORITOS?");
+        msgBox.setTitle("Adicionar filme aos favoritos.");
         msgBox.setIcon(R.drawable.ic_add);
         msgBox.setMessage("Tem certeza que deseja adicionar esse filme aos favoritos?");
         msgBox.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
@@ -218,13 +236,14 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
     }
+    public static void hideKeyboardClickBtn(Context context, View editText) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+    }
+
     private void hideKeyboardOver() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
-    }
-
-    private void hideKeyboard() {
-        search.clearFocus();
     }
 
     @Override

@@ -29,7 +29,7 @@ public class BancoDeDados extends SQLiteOpenHelper {
 
     public ArrayList<Integer> consultarFilmes() {
         SQLiteDatabase db = getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT filme_id FROM tb_filmes_favoritos ORDER BY _id asc", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM tb_filmes_favoritos ORDER BY filme_nome ", null);
         ArrayList<Integer> arrayList = new ArrayList<>();
 
         if (cursor.moveToFirst()) {
