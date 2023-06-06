@@ -78,8 +78,9 @@ public class SearchActivity extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Integer filme_id = filmes.get(i).getId();
                 String filme_name = filmes.get(i).getOriginal_title();
-                Toast.makeText(SearchActivity.this, filme_id + " / " + filme_name, Toast.LENGTH_SHORT).show();
-                inserirAosFavs(filme_id, filme_name);
+                if(!banco.searchMovie(filme_id)){
+                    inserirAosFavs(filme_id, filme_name);
+                }
                 return true;
             }
         });

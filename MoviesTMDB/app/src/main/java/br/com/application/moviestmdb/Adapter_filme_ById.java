@@ -1,7 +1,7 @@
 package br.com.application.moviestmdb;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,23 +16,23 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-public class Adapter_item_filme extends ArrayAdapter<Filme> {
+public class Adapter_filme_ById extends ArrayAdapter<Details> {
     private final Context context;
-    private final List<Filme> filmes;
+    private final List<Details> filmes_Details;
     private final List<Genero> generos;
 
-    public Adapter_item_filme(Context context, List<Filme> filmes, List<Genero> generos){
-        super(context, R.layout.item_filme_dois, filmes);
+    public Adapter_filme_ById(Context context, List<Details> filmes_details, List<Genero> generos){
+        super(context, R.layout.item_filme_dois, filmes_details);
         this.context = context;
-        this.filmes = filmes;
+        filmes_Details = filmes_details;
         this.generos = generos;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context
@@ -47,7 +47,7 @@ public class Adapter_item_filme extends ArrayAdapter<Filme> {
         TextView genero = (TextView) rowView.findViewById(R.id.genero);
 
         String url_p1 = "https://image.tmdb.org/t/p/w500";
-        String url_p2 = filmes.get(position).getPoster_path();
+        String url_p2 = filmes_Details.get(position).getPoster_path();
         String url_p3 = "?api_key=da0e4838c057baf77b75e5338ced2bb3";
         URL url;
         try {
@@ -59,21 +59,22 @@ public class Adapter_item_filme extends ArrayAdapter<Filme> {
         //GITHUB
         Glide.with(context).load(url).into(cartaz);
 
-        titulo.setText(filmes.get(position).getTitle());
-        overview.setText(filmes.get(position).getOverview());
-        release_date.setText(filmes.get(position).getRelease_date());
+        titulo.setText(filmes_Details.get(position).getTitle());
+        overview.setText(filmes_Details.get(position).getOverview());
+        release_date.setText(filmes_Details.get(position).getRelease_date());
 
-        double voteAverage = filmes.get(position).getVote_average().doubleValue();
+        double voteAverage = filmes_Details.get(position).getVote_average().doubleValue();
         DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(Locale.getDefault());
         decimalFormatSymbols.setDecimalSeparator('.');
         DecimalFormat decimalFormat = new DecimalFormat("#.0", decimalFormatSymbols);
         String formattedVoteAverage = decimalFormat.format(voteAverage);
         vote_average.setText("Avaliação: " + formattedVoteAverage);
 
+
         String str_generos_do_filme = "";
-        if(filmes.get(position).getGenre_ids() != null){
-            for(int i = 0; i<filmes.get(position).getGenre_ids().size(); i++){
-                Integer id_genero_filme = filmes.get(position).getGenre_ids().get(i);
+        if(filmes_Details.get(position).getGenres() != null){
+            for(int i = 0; i<filmes_Details.get(position).getGenres().size(); i++){
+                Integer id_genero_filme = filmes_Details.get(position).getGenres().get(i).getId();
                 for(int j = 0; j<generos.size(); j++){
                     if(Objects.equals(generos.get(j).getId(), id_genero_filme)){
                         str_generos_do_filme = str_generos_do_filme + " " + generos.get(j).getName();

@@ -82,8 +82,9 @@ public class MainActivity extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Integer filme_id = filmes.get(i).getId();
                 String filme_name = filmes.get(i).getOriginal_title();
-                Toast.makeText(MainActivity.this, filme_id + " / " + filme_name, Toast.LENGTH_SHORT).show();
-                inserirAosFavs(filme_id, filme_name);
+                if(!banco.searchMovie(filme_id)){
+                    inserirAosFavs(filme_id, filme_name);
+                }
                 return true;
             }
         });
@@ -98,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
-
 
     }
 
@@ -155,7 +155,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, "Erro: " + t.getMessage());
             }
         });
-
     }
 
 

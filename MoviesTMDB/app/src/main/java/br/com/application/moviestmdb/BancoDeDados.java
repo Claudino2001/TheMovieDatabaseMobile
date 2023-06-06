@@ -27,20 +27,34 @@ public class BancoDeDados extends SQLiteOpenHelper {
         // Aqui você pode implementar a lógica para migrar os dados existentes para a nova versão do esquema do banco de dados
     }
 
-    public ArrayList<String> consultarFilmes() {
+    public ArrayList<Integer> consultarFilmes() {
         SQLiteDatabase db = getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT filme_nome FROM tb_filmes_favoritos", null);
-        ArrayList<String> arrayList = new ArrayList<>();
+        Cursor cursor = db.rawQuery("SELECT filme_id FROM tb_filmes_favoritos ORDER BY _id asc", null);
+        ArrayList<Integer> arrayList = new ArrayList<>();
 
         if (cursor.moveToFirst()) {
             do {
-                String nome = cursor.getString((int) cursor.getColumnIndex("filme_nome"));
-                arrayList.add(nome);
+                int id = cursor.getInt((int) cursor.getColumnIndex("filme_id"));
+                arrayList.add(id);
             } while (cursor.moveToNext());
         }
 
-        cursor.close(); // Importante fechar o cursor depois de usá-lo
+        cursor.close();
         return arrayList;
+    }
+
+    public boolean searchMovie(int id) {
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT filme_id FROM tb_filmes_favoritos WHERE filme_id = "+ id +";", null);
+        if (cursor.moveToFirst()) {
+            // O cursor tem resultados, o filme foi encontrado
+            cursor.close();
+            return true;
+        } else {
+            // O cursor está vazio, o filme não foi encontrado
+            cursor.close();
+            return false;
+        }
     }
 
 
@@ -49,8 +63,8 @@ public class BancoDeDados extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO tb_filmes_favoritos (filme_id, filme_nome) VALUES (?, ?);", new Object[]{filme_id, filme_nome});
     }
 
-    public void excluirDados(int id) {
+    public void excluirDados(int filme_id) {
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM tb_filmes_favoritos WHERE _id = ?;", new Object[]{id});
+        db.execSQL("DELETE FROM tb_filmes_favoritos WHERE filme_id = ?;", new Object[]{filme_id});
     }
 }

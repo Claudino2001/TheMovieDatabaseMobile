@@ -28,20 +28,21 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class DetalhesMovieActivity extends AppCompatActivity {
-
+public class FavoriteFilmeDetails extends AppCompatActivity {
     private TextView titulo, original_title, release_date, overview, genre_ids, vote_average, txtDetalhes, txtTime, txtAge;
     private ImageView banner;
     private RecyclerView recyclerCast;
-    Filme filme;
-    List<Genero> generos;
+    Details filme;
     List<Cast> casts;
+
+    List<Genero> generos;
     Details detalhes_filme = new Details();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detalhes_movie);
+        setContentView(R.layout.activity_favorite_filme_details);
 
         titulo = (TextView) findViewById(R.id.titulo);
         vote_average = (TextView) findViewById(R.id.vote_average);
@@ -56,10 +57,11 @@ public class DetalhesMovieActivity extends AppCompatActivity {
         recyclerCast = (RecyclerView) findViewById(R.id.recyclerCast);
 
         Intent intent = getIntent();
-        if (intent.hasExtra("filme_obj")) {
+        if (intent.hasExtra("detalhes_filme")) {
             // Recupere o objeto do Intent usando getSerializableExtra() ou getParcelableExtra()
-            filme = (Filme) intent.getSerializableExtra("filme_obj");
+            filme = (Details) intent.getSerializableExtra("detalhes_filme");
             generos = (List<Genero>) intent.getSerializableExtra("generos_obj");
+
         }
 
         showInfoMovie();
@@ -68,7 +70,7 @@ public class DetalhesMovieActivity extends AppCompatActivity {
 
         GetAPIDetails();
 
-        GetCertification(); //Pegar a classificação indicativa do filme
+        GetCertification();
 
     }
 
@@ -221,11 +223,10 @@ public class DetalhesMovieActivity extends AppCompatActivity {
         String formattedVoteAverage = decimalFormat.format(voteAverage);
         vote_average.setText(formattedVoteAverage);
 
-
         String str_generos_do_filme = "";
         ArrayList<String> str_teste = new ArrayList<>();
-        for(int i = 0; i<filme.getGenre_ids().size(); i++){
-            Integer id_genero_filme = filme.getGenre_ids().get(i);
+        for(int i = 0; i<filme.getGenres().size(); i++){
+            Integer id_genero_filme = filme.getGenres().get(i).getId();
             for(int j = 0; j<generos.size(); j++){
                 if(Objects.equals(generos.get(j).getId(), id_genero_filme)){
                     str_teste.add(generos.get(j).getName());
@@ -235,7 +236,6 @@ public class DetalhesMovieActivity extends AppCompatActivity {
         }
         //genre_ids.setText(str_generos_do_filme);
         genre_ids.setText(str_teste.toString());
-
 
         String url_p1 = "https://image.tmdb.org/t/p/w500";
         String url_p2 = filme.getBackdrop_path();
@@ -250,16 +250,4 @@ public class DetalhesMovieActivity extends AppCompatActivity {
         Glide.with(this).load(url).into(banner);
     }
 
-    @Override
-    public void finish(){
-        super.finish();
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-
-    }
 }
