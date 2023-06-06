@@ -4,18 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg"
-    tools:context=".MainActivity">
+    tools:context=".SearchActivity"
+    android:background="@drawable/bg">
+
+    <SearchView
+        android:id="@+id/search"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="#D85892B8"
+        android:inputType="text"
+        android:queryHint="Busque por um filme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
-        android:id="@+id/list"
+        android:id="@+id/list_search"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="5dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/search" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -28,4 +41,5 @@
         app:labelVisibilityMode="auto"
         style="@style/Widget.App.BottomNavigationView"
         android:background="@color/ColorNavegationBar"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

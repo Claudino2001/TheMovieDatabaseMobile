@@ -1,12 +1,14 @@
 package br.com.application.moviestmdb;
 
+import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.List;
 
-public class Details {
+public class Details implements Serializable {
     private boolean adult;
     private String backdrop_path;
     private BigInteger budget;
-    //generos
+    private List<Genero> genres;
     private Integer id;
     private String homepage;
     private String imdb_id;
@@ -24,6 +26,14 @@ public class Details {
     private boolean video;
     private Number vote_average;
     private Integer vote_count;
+
+    public List<Genero> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<Genero> genres) {
+        this.genres = genres;
+    }
 
     public boolean isAdult() {
         return adult;

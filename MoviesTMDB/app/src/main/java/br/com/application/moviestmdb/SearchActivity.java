@@ -32,45 +32,41 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity {
-    private ListView list;
-    private static final String TAG = " MINHA TAG";
+public class SearchActivity extends AppCompatActivity {
+    private SearchView search;
     List<Filme> filmes = new ArrayList<>();
     List<Genero> generos = new ArrayList<>();
-    public BancoDeDados banco;
+    private ListView list;
     public BottomNavigationView bottomNavigationView;
+    public BancoDeDados banco;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        list = (ListView) findViewById(R.id.list);
-        View rootView = findViewById(android.R.id.content);
+        setContentView(R.layout.activity_search);
+        search = (SearchView) findViewById(R.id.search);
+        list = (ListView) findViewById(R.id.list_search);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.page_main);
 
-        banco();
+        banco = new BancoDeDados(this);
 
-        consultaRetrofitGeneros();
-
-        consultaRetrofitPopularMovies();
-
+        bottomNavigationView.setSelectedItemId(R.id.page_search);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.page_main:
+                        startActivity(new Intent(SearchActivity.this, MainActivity.class)
+                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                         return true;
                     case R.id.page_favoritos:
-                        startActivity(new Intent(MainActivity.this, FavoritosActivity.class)
+                        startActivity(new Intent(SearchActivity.this, FavoritosActivity.class)
                                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                         return true;
                     case R.id.page_search:
-                        startActivity(new Intent(MainActivity.this, SearchActivity.class)
-                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         return true;
                 }
                 return false;
@@ -92,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(MainActivity.this, DetalhesMovieActivity.class);
+                Intent intent = new Intent(SearchActivity.this, DetalhesMovieActivity.class);
                 intent.putExtra("filme_obj", (Serializable) filmes.get(i));
                 intent.putExtra("generos_obj", (Serializable) generos);
                 startActivity(intent);
@@ -100,6 +96,35 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                buscarFilme(s);
+                if(TextUtils.isEmpty(s)){
+                    consultaRetrofitPopularMovies();
+                }
+                hideKeyboardOver();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                buscarFilme(s);
+                if(TextUtils.isEmpty(s)){
+                    consultaRetrofitPopularMovies();
+                }
+                return true;
+            }
+        });
+        search.setOnKeyListener((v, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+                hideKeyboardOver();
+                return true;
+            }
+            return false;
+        });
+
+        search.setImeOptions(EditorInfo.IME_ACTION_DONE);
     }
 
     private void inserirAosFavs(int filme_id, String filme_nome) {
@@ -116,53 +141,11 @@ public class MainActivity extends AppCompatActivity {
         msgBox.setNegativeButton("Não", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(MainActivity.this, "Operação cancelada.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SearchActivity.this, "Operação cancelada.", Toast.LENGTH_SHORT).show();
             }
         });
         msgBox.show();
     }
-
-    private void banco() {
-        banco = new BancoDeDados(this);
-    }
-
-    private void consultaRetrofitGeneros() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Service.URL_BASE)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        Service service = retrofit.create(Service.class);
-        Call<Genres> request = service.GetAPIGeneros("pt-BR", "da0e4838c057baf77b75e5338ced2bb3");
-
-        request.enqueue(new Callback<Genres>() {
-            @Override
-            public void onResponse(Call<Genres> call, Response<Genres> response) {
-                if(!response.isSuccessful()){
-                    Log.i(TAG, "Erro: " + response.code());
-                }else{
-                    Genres genres = response.body();
-
-                    for(Genero genero: genres.getGenres()){
-                        Log.i(TAG, String.format("GENERO: %s %s", genero.getId(), genero.getName()));
-                    }
-                    generos = genres.getGenres();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Genres> call, Throwable t) {
-                Log.e(TAG, "Erro: " + t.getMessage());
-            }
-        });
-    }
-
-
-    private void mostrarFilmes() {
-        Adapter_item_filme adapter = new Adapter_item_filme(this, filmes, generos);
-        list.setAdapter(adapter);
-    }
-
 
     private void consultaRetrofitPopularMovies() {
         Retrofit retrofit = new Retrofit.Builder()
@@ -177,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<GetPopularMovies> call, Response<GetPopularMovies> response) {
                 if(!response.isSuccessful()){
-                    Log.i(TAG, "Erro: " + response.code());
+                    Log.i("TAG", "Erro: " + response.code());
                 }else{
                     //A requisição foi realizada com sucesso
                     GetPopularMovies getPopularMovies = response.body();
@@ -192,15 +175,61 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<GetPopularMovies> call, Throwable t) {
-                Log.e(TAG, "Erro: " + t.getMessage());
+                Log.e("TAG", "Erro: " + t.getMessage());
             }
         });
+    }
+
+    private void mostrarFilmes() {
+        Adapter_item_filme adapter = new Adapter_item_filme(this, filmes, generos);
+        list.setAdapter(adapter);
+    }
+
+    private void buscarFilme(String consulta){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Service.URL_BASE)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        Service service = retrofit.create(Service.class);
+        Call<GetPopularMovies> request = service.GetAPISearchMovie(consulta, false, "pt-BR", 1, "da0e4838c057baf77b75e5338ced2bb3");
+
+        request.enqueue(new Callback<GetPopularMovies>() {
+            @Override
+            public void onResponse(Call<GetPopularMovies> call, Response<GetPopularMovies> response) {
+                if(!response.isSuccessful()){
+                    Log.i("TAG", "Erro: " + response.code());
+                }
+                else{
+                    GetPopularMovies getPopularMovies = response.body();
+
+                    for(Filme f: getPopularMovies.getResults()){
+                        Log.i("TAG",String.format("consulta: %s",f.getTitle()));
+                    }
+                    filmes.clear();
+                    filmes = getPopularMovies.getResults();
+                }
+                mostrarFilmes();
+            }
+
+            @Override
+            public void onFailure(Call<GetPopularMovies> call, Throwable t) {
+                Log.e("TAG", "Erro: " + t.getMessage());
+            }
+        });
+    }
+    private void hideKeyboardOver() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+    }
+
+    private void hideKeyboard() {
+        search.clearFocus();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        bottomNavigationView.setSelectedItemId(R.id.page_main);
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        bottomNavigationView.setSelectedItemId(R.id.page_search);
     }
 }
