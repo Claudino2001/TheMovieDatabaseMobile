@@ -33,49 +33,46 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_weight="0"
+                android:lines="2"
                 android:text="Tìtulo"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:lines="2"/>
+                android:textColor="@color/white"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/overview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:text="descrição..."
                 android:lines="4"
-                android:textColor="@color/black"
-                />
+                android:text="descrição..."
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/release_date"
-                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:layout_weight="0"
                 android:text="2023"
-                android:textColor="@color/black"
-                />
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/vote_average"
-                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:layout_weight="0"
                 android:text="Nota 123"
-                android:textColor="@color/black"
-                />
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/genero"
-                android:layout_marginTop="5dp"
-                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:layout_weight="0"
-                android:text="Generos" />
+                android:text="Generos"
+                android:textColor="@color/white" />
 
         </LinearLayout>
 

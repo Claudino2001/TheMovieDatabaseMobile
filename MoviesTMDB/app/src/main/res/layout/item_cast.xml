@@ -21,7 +21,7 @@
         android:layout_marginRight="10dp"
         android:lines="2"
         android:text="original_name"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold" />
 
@@ -33,6 +33,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
         android:lines="2"
-        android:text="character" />
+        android:text="character"
+        android:textColor="@color/white" />
 
 </LinearLayout>
