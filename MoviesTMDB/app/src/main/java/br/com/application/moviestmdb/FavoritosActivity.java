@@ -3,10 +3,14 @@ package br.com.application.moviestmdb;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -14,6 +18,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -36,7 +41,7 @@ public class FavoritosActivity extends AppCompatActivity {
     Details detalhes_filme;
     ArrayList<Details> filmes_favoritos;
     List<Genero> generos = new ArrayList<>();
-
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +49,8 @@ public class FavoritosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_favoritos);
 
         listFav = (ListView) findViewById(R.id.list_fav);
+
+        progressBarMetodo();
 
         implementationNavigationView();
 
@@ -70,6 +77,31 @@ public class FavoritosActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void progressBarMetodo() {
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.onVisibilityAggregated(true);
+        // Obtendo uma referência para a cor desejada
+        int cor = ContextCompat.getColor(this, R.color.ColorNavegationBar);
+
+        // Criando uma instância de ColorStateList com a cor desejada
+        ColorStateList colorStateList = ColorStateList.valueOf(cor);
+
+        // Definindo a cor da ProgressBar
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            progressBar.setProgressTintList(colorStateList);
+            progressBar.setSecondaryProgressTintList(colorStateList);
+            progressBar.setIndeterminateTintList(colorStateList);
+        } else {
+            // Para versões mais antigas do Android
+            PorterDuff.Mode mode = PorterDuff.Mode.SRC_IN;
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
+                mode = PorterDuff.Mode.MULTIPLY;
+            }
+            progressBar.getProgressDrawable().setColorFilter(cor, mode);
+            progressBar.getIndeterminateDrawable().setColorFilter(cor, mode);
+        }
     }
 
     private void excluirFilmeDosFavs(int number) {
@@ -154,6 +186,7 @@ public class FavoritosActivity extends AppCompatActivity {
                         detalhes_filme = details;
                         filmes_favoritos.add(detalhes_filme);
                         System.out.println(detalhes_filme.getOriginal_title());
+                        progressBar.onVisibilityAggregated(false);
                     }
 
                     // Incrementar o valor no array
