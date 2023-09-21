@@ -43,7 +43,7 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.MoviesTMDB" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.MoviesTMDB" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">#E50914</item>
         <item name="colorPrimaryVariant">#B2070E</item>

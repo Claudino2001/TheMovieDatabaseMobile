@@ -44,7 +44,6 @@ public class SearchActivity extends AppCompatActivity {
     public BottomNavigationView bottomNavigationView;
     public BancoDeDados banco;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -186,6 +185,7 @@ public class SearchActivity extends AppCompatActivity {
                 banco.inserirDados(filme_id, filme_nome);
             }
         });
+
         msgBox.setNegativeButton("Não", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

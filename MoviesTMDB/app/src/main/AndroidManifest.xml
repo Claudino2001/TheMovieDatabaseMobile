@@ -16,7 +16,6 @@
         <activity
             android:name=".FavoriteFilmeDetails"
             android:screenOrientation="portrait"
-            android:parentActivityName=".FavoritosActivity"
             android:exported="false" />
         <activity
             android:name=".SearchActivity"

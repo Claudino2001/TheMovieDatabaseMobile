@@ -173,53 +173,57 @@ public class FavoritosActivity extends AppCompatActivity {
     private void GetAPIDetails() {
         filmes_favoritos = new ArrayList<>();
         ArrayList lista_favs = banco.consultarFilmes();
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Service.URL_BASE)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Log.i("LISTA DE FAVORITOS", String.format(lista_favs.toString()));
+        if(!lista_favs.isEmpty()) {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(Service.URL_BASE)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
 
-        Service service = retrofit.create(Service.class);
+            Service service = retrofit.create(Service.class);
 
-        // Usar um array para armazenar o valor da variável
-        final int[] chamadasAssincronasConcluidas = {0};
+            // Usar um array para armazenar o valor da variável
+            final int[] chamadasAssincronasConcluidas = {0};
 
-        // Fazer um loop para cada id de filme
-        for (int i = 0; i < lista_favs.size(); i++) {
-            Call<Details> request = service.GetDetails((Integer) lista_favs.get(i),"pt-BR" ,"da0e4838c057baf77b75e5338ced2bb3");
-            request.enqueue(new Callback<Details>() {
-                @Override
-                public void onResponse(Call<Details> call, Response<Details> response) {
-                    if (response.isSuccessful()) {
-                        Details details = response.body();
-                        detalhes_filme = details;
-                        filmes_favoritos.add(detalhes_filme);
-                        System.out.println(detalhes_filme.getOriginal_title());
+            // Fazer um loop para cada id de filme
+            for (int i = 0; i < lista_favs.size(); i++) {
+                Call<Details> request = service.GetDetails((Integer) lista_favs.get(i), "pt-BR", "da0e4838c057baf77b75e5338ced2bb3");
+                request.enqueue(new Callback<Details>() {
+                    @Override
+                    public void onResponse(Call<Details> call, Response<Details> response) {
+                        if (response.isSuccessful()) {
+                            Details details = response.body();
+                            detalhes_filme = details;
+                            filmes_favoritos.add(detalhes_filme);
+                            System.out.println(detalhes_filme.getOriginal_title());
+                            progressBar.onVisibilityAggregated(false);
+                        }
+
+                        // Incrementar o valor no array
+                        chamadasAssincronasConcluidas[0]++;
+
+                        // Verificar se todas as chamadas assíncronas foram concluídas
+                        if (chamadasAssincronasConcluidas[0] == lista_favs.size()) {
+                            listar();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Details> call, Throwable t) {
+                        Log.e("TAG erro", "Erro: " + t.getMessage());
+
+                        // Incrementar o valor no array
+                        chamadasAssincronasConcluidas[0]++;
+
+                        // Verificar se todas as chamadas assíncronas foram concluídas
+                        if (chamadasAssincronasConcluidas[0] == lista_favs.size()) {
+                            listar();
+                        }
                         progressBar.onVisibilityAggregated(false);
                     }
-
-                    // Incrementar o valor no array
-                    chamadasAssincronasConcluidas[0]++;
-
-                    // Verificar se todas as chamadas assíncronas foram concluídas
-                    if (chamadasAssincronasConcluidas[0] == lista_favs.size()) {
-                        listar();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<Details> call, Throwable t) {
-                    Log.e("TAG erro", "Erro: " + t.getMessage());
-
-                    // Incrementar o valor no array
-                    chamadasAssincronasConcluidas[0]++;
-
-                    // Verificar se todas as chamadas assíncronas foram concluídas
-                    if (chamadasAssincronasConcluidas[0] == lista_favs.size()) {
-                        listar();
-                    }
-                }
-            });
-        }
+                });
+            }
+        }else progressBar.onVisibilityAggregated(false);
     }
 
     private void listar() {
@@ -258,5 +262,6 @@ public class FavoritosActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         bottomNavigationView.setSelectedItemId(R.id.page_favoritos);
+        progressBarMetodo();
     }
 }

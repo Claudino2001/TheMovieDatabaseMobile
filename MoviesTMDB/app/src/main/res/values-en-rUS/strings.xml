@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Cinemateca</string>
+    <string name="app_name">The Movie Database</string>
     <string name="menuText_1">Home</string>
     <string name="menuText_2">Favorites</string>
     <string name="menuText_3">Search</string>
-    <string name="SearchText">Search Here...</string>
+    <string name="SearchText">Search here...</string>
 </resources>
