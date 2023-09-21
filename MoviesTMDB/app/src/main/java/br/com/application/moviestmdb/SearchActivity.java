@@ -3,6 +3,7 @@ package br.com.application.moviestmdb;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.Activity;
 import android.content.Context;
@@ -42,7 +43,6 @@ public class SearchActivity extends AppCompatActivity {
     private ListView list;
     public BottomNavigationView bottomNavigationView;
     public BancoDeDados banco;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +101,36 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
+        hideTeclado();
 
+    }
+
+    private void hideTeclado() {
+        ViewGroup rootView = findViewById(android.R.id.content);
+        rootView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                hideKeyboard();
+                return false;
+            }
+        });
+
+        list.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                hideKeyboard();
+                return false;
+            }
+        });
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View currentFocusView = getCurrentFocus();
+        if (currentFocusView != null) {
+            imm.hideSoftInputFromWindow(currentFocusView.getWindowToken(), 0);
+            currentFocusView.clearFocus();
+        }
     }
 
     private void configSearch() {
@@ -156,6 +185,7 @@ public class SearchActivity extends AppCompatActivity {
                 banco.inserirDados(filme_id, filme_nome);
             }
         });
+
         msgBox.setNegativeButton("Não", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

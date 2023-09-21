@@ -34,7 +34,6 @@ public class FavoriteFilmeDetails extends AppCompatActivity {
     private RecyclerView recyclerCast;
     Details filme;
     List<Cast> casts;
-
     List<Genero> generos;
     Details detalhes_filme = new Details();
 
@@ -248,6 +247,12 @@ public class FavoriteFilmeDetails extends AppCompatActivity {
         }
         //GITHUB
         Glide.with(this).load(url).into(banner);
+    }
+
+    @Override
+    public void finish(){
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
 }

@@ -35,7 +35,7 @@
                 android:fontFamily="@font/archivo"
                 android:text="Titulo do filme"
                 android:textAlignment="center"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="28sp"
                 android:textStyle="bold" />
 
@@ -47,6 +47,7 @@
                 android:layout_marginRight="10dp"
                 android:text="original_title"
                 android:textAlignment="center"
+                android:textColor="@color/white"
                 android:textSize="20sp" />
 
             <TextView
@@ -57,6 +58,7 @@
                 android:layout_marginRight="10dp"
                 android:text="-"
                 android:textAlignment="center"
+                android:textColor="@color/white"
                 android:textSize="20sp" />
 
             <TextView
@@ -67,6 +69,7 @@
                 android:layout_marginRight="10dp"
                 android:text="-"
                 android:textAlignment="center"
+                android:textColor="@color/white"
                 android:textSize="20sp" />
 
             <TextView
@@ -77,7 +80,7 @@
                 android:layout_marginTop="25dp"
                 android:layout_marginRight="10dp"
                 android:text="Data de lançamento:"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -88,7 +91,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:text="release_date"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="18sp" />
 
             <TextView
@@ -99,7 +102,7 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="10dp"
                 android:text="Avaliação:"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -110,7 +113,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:text="vote_average"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="18sp" />
 
             <TextView
@@ -121,7 +124,7 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="10dp"
                 android:text="Sinopse:"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -132,7 +135,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:text="overview"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="18sp" />
 
             <TextView
@@ -143,7 +146,7 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="10dp"
                 android:text="Gênero(s):"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -154,7 +157,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:text="genre_ids"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="18sp" />
 
             <TextView
@@ -165,7 +168,7 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="10dp"
                 android:text="Elenco:"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -185,7 +188,7 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="10dp"
                 android:text="Detalhes:"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -197,7 +200,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="30dp"
                 android:text="detalhes"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="18sp" />
 
 

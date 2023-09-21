@@ -3,17 +3,23 @@ package br.com.application.moviestmdb;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.core.content.ContextCompat;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -36,7 +42,8 @@ public class FavoritosActivity extends AppCompatActivity {
     Details detalhes_filme;
     ArrayList<Details> filmes_favoritos;
     List<Genero> generos = new ArrayList<>();
-
+    ProgressBar progressBar;
+    private InputMethodManager inputMethodManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +52,19 @@ public class FavoritosActivity extends AppCompatActivity {
 
         listFav = (ListView) findViewById(R.id.list_fav);
 
+        progressBarMetodo();
+
         implementationNavigationView();
 
         banco = new BancoDeDados(this);
 
         consultaRetrofitGeneros().thenRun(this::GetAPIDetails);
 
+        listaFavoritosConfig();
+
+    }
+
+    private void listaFavoritosConfig() {
         listFav.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -70,6 +84,32 @@ public class FavoritosActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    private void progressBarMetodo() {
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.onVisibilityAggregated(true);
+        // Obtendo uma referência para a cor desejada
+        int cor = ContextCompat.getColor(this, R.color.ColorNavegationBar);
+
+        // Criando uma instância de ColorStateList com a cor desejada
+        ColorStateList colorStateList = ColorStateList.valueOf(cor);
+
+        // Definindo a cor da ProgressBar
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            progressBar.setProgressTintList(colorStateList);
+            progressBar.setSecondaryProgressTintList(colorStateList);
+            progressBar.setIndeterminateTintList(colorStateList);
+        } else {
+            // Para versões mais antigas do Android
+            PorterDuff.Mode mode = PorterDuff.Mode.SRC_IN;
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
+                mode = PorterDuff.Mode.MULTIPLY;
+            }
+            progressBar.getProgressDrawable().setColorFilter(cor, mode);
+            progressBar.getIndeterminateDrawable().setColorFilter(cor, mode);
+        }
     }
 
     private void excluirFilmeDosFavs(int number) {
@@ -133,52 +173,57 @@ public class FavoritosActivity extends AppCompatActivity {
     private void GetAPIDetails() {
         filmes_favoritos = new ArrayList<>();
         ArrayList lista_favs = banco.consultarFilmes();
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Service.URL_BASE)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Log.i("LISTA DE FAVORITOS", String.format(lista_favs.toString()));
+        if(!lista_favs.isEmpty()) {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(Service.URL_BASE)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
 
-        Service service = retrofit.create(Service.class);
+            Service service = retrofit.create(Service.class);
 
-        // Usar um array para armazenar o valor da variável
-        final int[] chamadasAssincronasConcluidas = {0};
+            // Usar um array para armazenar o valor da variável
+            final int[] chamadasAssincronasConcluidas = {0};
 
-        // Fazer um loop para cada id de filme
-        for (int i = 0; i < lista_favs.size(); i++) {
-            Call<Details> request = service.GetDetails((Integer) lista_favs.get(i),"pt-BR" ,"da0e4838c057baf77b75e5338ced2bb3");
-            request.enqueue(new Callback<Details>() {
-                @Override
-                public void onResponse(Call<Details> call, Response<Details> response) {
-                    if (response.isSuccessful()) {
-                        Details details = response.body();
-                        detalhes_filme = details;
-                        filmes_favoritos.add(detalhes_filme);
-                        System.out.println(detalhes_filme.getOriginal_title());
+            // Fazer um loop para cada id de filme
+            for (int i = 0; i < lista_favs.size(); i++) {
+                Call<Details> request = service.GetDetails((Integer) lista_favs.get(i), "pt-BR", "da0e4838c057baf77b75e5338ced2bb3");
+                request.enqueue(new Callback<Details>() {
+                    @Override
+                    public void onResponse(Call<Details> call, Response<Details> response) {
+                        if (response.isSuccessful()) {
+                            Details details = response.body();
+                            detalhes_filme = details;
+                            filmes_favoritos.add(detalhes_filme);
+                            System.out.println(detalhes_filme.getOriginal_title());
+                            progressBar.onVisibilityAggregated(false);
+                        }
+
+                        // Incrementar o valor no array
+                        chamadasAssincronasConcluidas[0]++;
+
+                        // Verificar se todas as chamadas assíncronas foram concluídas
+                        if (chamadasAssincronasConcluidas[0] == lista_favs.size()) {
+                            listar();
+                        }
                     }
 
-                    // Incrementar o valor no array
-                    chamadasAssincronasConcluidas[0]++;
+                    @Override
+                    public void onFailure(Call<Details> call, Throwable t) {
+                        Log.e("TAG erro", "Erro: " + t.getMessage());
 
-                    // Verificar se todas as chamadas assíncronas foram concluídas
-                    if (chamadasAssincronasConcluidas[0] == lista_favs.size()) {
-                        listar();
+                        // Incrementar o valor no array
+                        chamadasAssincronasConcluidas[0]++;
+
+                        // Verificar se todas as chamadas assíncronas foram concluídas
+                        if (chamadasAssincronasConcluidas[0] == lista_favs.size()) {
+                            listar();
+                        }
+                        progressBar.onVisibilityAggregated(false);
                     }
-                }
-
-                @Override
-                public void onFailure(Call<Details> call, Throwable t) {
-                    Log.e("TAG erro", "Erro: " + t.getMessage());
-
-                    // Incrementar o valor no array
-                    chamadasAssincronasConcluidas[0]++;
-
-                    // Verificar se todas as chamadas assíncronas foram concluídas
-                    if (chamadasAssincronasConcluidas[0] == lista_favs.size()) {
-                        listar();
-                    }
-                }
-            });
-        }
+                });
+            }
+        }else progressBar.onVisibilityAggregated(false);
     }
 
     private void listar() {
@@ -217,5 +262,6 @@ public class FavoritosActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         bottomNavigationView.setSelectedItemId(R.id.page_favoritos);
+        progressBarMetodo();
     }
 }

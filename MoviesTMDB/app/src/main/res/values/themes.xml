@@ -15,16 +15,42 @@
 <!--    </style>-->
 <!--</resources>-->
 
+<!--<resources xmlns:tools="http://schemas.android.com/tools">-->
+<!--    &lt;!&ndash; Base application theme. &ndash;&gt;-->
+<!--    <style name="Theme.MoviesTMDB" parent="Theme.MaterialComponents.Light.DarkActionBar">-->
+<!--        &lt;!&ndash; Primary brand color. &ndash;&gt;-->
+<!--        <item name="colorPrimary">#AED6F1</item>-->
+<!--        <item name="colorPrimaryVariant">#6FB8E8</item>-->
+<!--        <item name="colorOnPrimary">#FFFFFF</item>-->
+<!--        &lt;!&ndash; Secondary brand color. &ndash;&gt;-->
+<!--        <item name="colorSecondary">#5DADE2</item>-->
+<!--        <item name="colorSecondaryVariant">#1A5276</item>-->
+<!--        <item name="colorOnSecondary">#FFFFFF</item>-->
+<!--        &lt;!&ndash; Status bar color. &ndash;&gt;-->
+<!--        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>-->
+<!--        &lt;!&ndash; Customize your theme here. &ndash;&gt;-->
+<!--    </style>-->
+
+<!--    <style name="Widget.App.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView.Colored">-->
+<!--        <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>-->
+<!--    </style>-->
+
+<!--    <style name="ThemeOverlay.App.BottomNavigationView" parent="">-->
+<!--        <item name="colorOnPrimary">@color/blue_two</item>-->
+<!--    </style>-->
+
+<!--</resources>-->
+
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.MoviesTMDB" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#AED6F1</item>
-        <item name="colorPrimaryVariant">#6FB8E8</item>
+        <item name="colorPrimary">#E50914</item>
+        <item name="colorPrimaryVariant">#B2070E</item>
         <item name="colorOnPrimary">#FFFFFF</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">#5DADE2</item>
-        <item name="colorSecondaryVariant">#1A5276</item>
+        <item name="colorSecondary">#221F1F</item>
+        <item name="colorSecondaryVariant">#000000</item>
         <item name="colorOnSecondary">#FFFFFF</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
@@ -36,7 +62,7 @@
     </style>
 
     <style name="ThemeOverlay.App.BottomNavigationView" parent="">
-        <item name="colorOnPrimary">@color/blue_two</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
     </style>
 
 </resources>
