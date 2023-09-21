@@ -1,6 +1,6 @@
-# MoviesTMDB
+# The Movie Database Mobile
 ## Sobre
-O MoviesTMDB  é um aplicativo mobile que consome a API fornecida pelo [The Movie Database(TMDb)](https://www.themoviedb.org/?language=pt-BR). 
+O The Movie Database é um aplicativo mobile que consome a API fornecida pelo [The Movie Database(TMDb)](https://www.themoviedb.org/?language=pt-BR). 
 
 TMDb é uma base de dados grátis e de código aberto, sobre filmes e seriados, criado por Travis Bell em 2008.
 
@@ -14,6 +14,6 @@ Dê preferência sempre para a versão mais recente.
 
 ## Imagens
 <div align="left">
-<img src="https://github.com/Claudino2001/MoviesTMDB/assets/90232353/b81ac36b-e21f-40de-8730-d149d128c3bc" width = "500px"/>
+<img src="https://github.com/Claudino2001/MoviesTMDB/assets/90232353/cb90611d-de73-486c-8ebb-b9adc98a46db" width = "500px"/>
 </div>
 
